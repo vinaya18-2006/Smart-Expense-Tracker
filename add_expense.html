@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2>Add Expense</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Expense</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

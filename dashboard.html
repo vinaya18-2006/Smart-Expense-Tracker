@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Your Expenses</h2>
+<div class="mb-3">
+    <a href="?filter=all" class="btn btn-outline-primary">All</a>
+    <a href="?filter=today" class="btn btn-outline-primary">Today</a>
+    <a href="?filter=week" class="btn btn-outline-primary">This Week</a>
+    <a href="?filter=month" class="btn btn-outline-primary">This Month</a>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.description }}</td>
+                    <td>${{ expense.amount }}</td>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>
+                        <a href="{% url 'edit_expense' expense.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_expense' expense.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <canvas id="categoryChart"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    const data = {{ category_data_json|safe }};
+    const labels = Object.keys(data);
+    const values = Object.values(data);
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+            }]
+        }
+    });
+</script>
+{% endblock %}

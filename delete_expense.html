@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Expense{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2>Delete Expense</h2>
+        <p>Are you sure you want to delete "{{ expense.description }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
